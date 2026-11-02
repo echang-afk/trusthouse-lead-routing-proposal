@@ -1,0 +1,232 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "之後:4 個功能,一張對照表,兩個品牌",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "frontend": {
+          "label": "入口(form)"
+        },
+        "backend": {
+          "label": "Workflow"
+        },
+        "database": {
+          "label": "資料庫"
+        },
+        "external": {
+          "label": "信件"
+        }
+      }
+    }
+  },
+  "components": [
+    {
+      "id": "forms",
+      "type": "frontend",
+      "label": "TrustHouse 2 個正規化 form",
+      "sublabel": "頁面帶 region 值",
+      "pos": [
+        40,
+        210
+      ],
+      "size": [
+        170,
+        70
+      ]
+    },
+    {
+      "id": "table",
+      "type": "database",
+      "label": "HubDB 對照表",
+      "sublabel": "form、答案、region、owner、品牌、通知、信",
+      "pos": [
+        340,
+        40
+      ],
+      "size": [
+        190,
+        66
+      ],
+      "tag": "唯一要改的地方"
+    },
+    {
+      "id": "assign",
+      "type": "backend",
+      "label": "Assign Owner",
+      "sublabel": "owner 空才設,寫 lead_region",
+      "pos": [
+        340,
+        150
+      ],
+      "size": [
+        190,
+        60
+      ]
+    },
+    {
+      "id": "alert",
+      "type": "backend",
+      "label": "Internal Alert",
+      "sublabel": "查表,依類型與 region 通知",
+      "pos": [
+        340,
+        250
+      ],
+      "size": [
+        190,
+        60
+      ]
+    },
+    {
+      "id": "nurture",
+      "type": "backend",
+      "label": "Nurture by Region",
+      "sublabel": "查表,依 region 寄各自的信",
+      "pos": [
+        340,
+        350
+      ],
+      "size": [
+        190,
+        60
+      ]
+    },
+    {
+      "id": "life",
+      "type": "backend",
+      "label": "Lifecycle",
+      "sublabel": "點 Calendly 設 SQL",
+      "pos": [
+        340,
+        450
+      ],
+      "size": [
+        190,
+        60
+      ]
+    },
+    {
+      "id": "owner",
+      "type": "database",
+      "label": "contact",
+      "sublabel": "owner、lead_region",
+      "pos": [
+        700,
+        150
+      ],
+      "size": [
+        170,
+        60
+      ]
+    },
+    {
+      "id": "staff",
+      "type": "external",
+      "label": "同仁收到通知",
+      "sublabel": "owner 與固定名單",
+      "pos": [
+        700,
+        250
+      ],
+      "size": [
+        170,
+        60
+      ]
+    },
+    {
+      "id": "visitor",
+      "type": "external",
+      "label": "訪客收到信",
+      "sublabel": "5 封,7 天內",
+      "pos": [
+        700,
+        350
+      ],
+      "size": [
+        170,
+        60
+      ]
+    },
+    {
+      "id": "awforms",
+      "type": "frontend",
+      "label": "Alliance 18 個既有 form",
+      "sublabel": "不改 form,用州別答案",
+      "pos": [
+        40,
+        60
+      ],
+      "size": [
+        170,
+        70
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "forms-assign",
+      "from": "forms",
+      "to": "assign",
+      "label": "提交",
+      "variant": "emphasis"
+    },
+    {
+      "id": "forms-alert",
+      "from": "forms",
+      "to": "alert"
+    },
+    {
+      "id": "forms-nurture",
+      "from": "forms",
+      "to": "nurture"
+    },
+    {
+      "id": "assign-table",
+      "from": "assign",
+      "to": "table",
+      "label": "查",
+      "variant": "dashed",
+      "fromSide": "top",
+      "toSide": "bottom"
+    },
+    {
+      "id": "assign-owner",
+      "from": "assign",
+      "to": "owner",
+      "label": "寫入",
+      "variant": "emphasis"
+    },
+    {
+      "id": "alert-staff",
+      "from": "alert",
+      "to": "staff",
+      "variant": "dashed"
+    },
+    {
+      "id": "nurture-visitor",
+      "from": "nurture",
+      "to": "visitor",
+      "variant": "dashed"
+    },
+    {
+      "id": "visitor-life",
+      "from": "visitor",
+      "to": "life",
+      "label": "點信內 Calendly",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "right"
+    },
+    {
+      "id": "aw-assign",
+      "from": "awforms",
+      "to": "assign",
+      "label": "同一組 workflow",
+      "variant": "emphasis"
+    }
+  ]
+}

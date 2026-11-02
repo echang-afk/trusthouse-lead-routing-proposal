@@ -1,0 +1,285 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "One membership lead, from form to follow-up",
+    "locale": "en",
+    "viewBox": [
+      1080,
+      730
+    ],
+    "column_fit": "spread",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "owner",
+        "label": "Set owner",
+        "focus": [
+          "visitor",
+          "page",
+          "hubspot",
+          "assign",
+          "table"
+        ],
+        "note": "The region arrives with the submission; the table decides the owner, set only if blank."
+      },
+      {
+        "id": "alert",
+        "label": "Alert the team",
+        "focus": [
+          "hubspot",
+          "alert",
+          "table"
+        ],
+        "note": "Wait 2 minutes so the owner is written first, then send by alert type."
+      },
+      {
+        "id": "nurture",
+        "label": "Send nurture emails",
+        "focus": [
+          "hubspot",
+          "nurture",
+          "table",
+          "visitor"
+        ],
+        "note": "Triggered only for the listed forms; sends each region's 5 emails."
+      }
+    ]
+  },
+  "participants": [
+    {
+      "id": "visitor",
+      "type": "external",
+      "label": "Visitor",
+      "sublabel": "fills the form"
+    },
+    {
+      "id": "page",
+      "type": "frontend",
+      "label": "Page embed",
+      "sublabel": "passes the region"
+    },
+    {
+      "id": "hubspot",
+      "type": "cloud",
+      "label": "HubSpot",
+      "sublabel": "form and contact"
+    },
+    {
+      "id": "assign",
+      "type": "backend",
+      "label": "Assign Owner",
+      "sublabel": "workflow"
+    },
+    {
+      "id": "table",
+      "type": "database",
+      "label": "HubDB table",
+      "sublabel": "form, region, owner"
+    },
+    {
+      "id": "alert",
+      "type": "messagebus",
+      "label": "Internal Alert",
+      "sublabel": "workflow"
+    },
+    {
+      "id": "nurture",
+      "type": "messagebus",
+      "label": "Nurture",
+      "sublabel": "workflow"
+    }
+  ],
+  "segments": [
+    {
+      "from": 150,
+      "to": 355,
+      "label": "Set owner"
+    },
+    {
+      "from": 362,
+      "to": 500,
+      "label": "Alert the team"
+    },
+    {
+      "from": 512,
+      "to": 645,
+      "label": "Nurture"
+    }
+  ],
+  "messages": [
+    {
+      "id": "fill",
+      "from": "visitor",
+      "to": "page",
+      "y": 175,
+      "label": "fills the form",
+      "variant": "default"
+    },
+    {
+      "id": "submit",
+      "from": "page",
+      "to": "hubspot",
+      "y": 207,
+      "label": "submit, with lead_region",
+      "variant": "emphasis"
+    },
+    {
+      "id": "trigger-owner",
+      "from": "hubspot",
+      "to": "assign",
+      "y": 239,
+      "label": "trigger, wait 1 min",
+      "variant": "default"
+    },
+    {
+      "id": "lookup-owner",
+      "from": "assign",
+      "to": "table",
+      "y": 271,
+      "label": "look up form and region",
+      "variant": "emphasis"
+    },
+    {
+      "id": "owner-result",
+      "from": "table",
+      "to": "assign",
+      "y": 303,
+      "label": "owner, alert type",
+      "variant": "return"
+    },
+    {
+      "id": "write-owner",
+      "from": "assign",
+      "to": "hubspot",
+      "y": 335,
+      "label": "write lead_region; owner if blank",
+      "variant": "emphasis"
+    },
+    {
+      "id": "trigger-alert",
+      "from": "hubspot",
+      "to": "alert",
+      "y": 385,
+      "label": "trigger, wait 2 min",
+      "variant": "default"
+    },
+    {
+      "id": "lookup-alert",
+      "from": "alert",
+      "to": "table",
+      "y": 417,
+      "label": "look up alert type",
+      "variant": "default"
+    },
+    {
+      "id": "alert-result",
+      "from": "table",
+      "to": "alert",
+      "y": 449,
+      "label": "type and region",
+      "variant": "return"
+    },
+    {
+      "id": "send-alert",
+      "from": "alert",
+      "to": "hubspot",
+      "y": 481,
+      "label": "email owner and fixed list",
+      "variant": "dashed"
+    },
+    {
+      "id": "trigger-nurture",
+      "from": "hubspot",
+      "to": "nurture",
+      "y": 535,
+      "label": "trigger, listed forms only",
+      "variant": "default"
+    },
+    {
+      "id": "lookup-nurture",
+      "from": "nurture",
+      "to": "table",
+      "y": 567,
+      "label": "look up region",
+      "variant": "default"
+    },
+    {
+      "id": "nurture-result",
+      "from": "table",
+      "to": "nurture",
+      "y": 599,
+      "label": "region",
+      "variant": "return"
+    },
+    {
+      "id": "send-mail",
+      "from": "nurture",
+      "to": "visitor",
+      "y": 631,
+      "label": "email 1 now, 5 within 7 days",
+      "variant": "dashed"
+    }
+  ],
+  "activations": [
+    {
+      "participant": "hubspot",
+      "from": 202,
+      "to": 488,
+      "type": "cloud"
+    },
+    {
+      "participant": "assign",
+      "from": 234,
+      "to": 340,
+      "type": "backend"
+    },
+    {
+      "participant": "table",
+      "from": 266,
+      "to": 308,
+      "type": "database"
+    },
+    {
+      "participant": "alert",
+      "from": 380,
+      "to": 486,
+      "type": "messagebus"
+    },
+    {
+      "participant": "nurture",
+      "from": 530,
+      "to": 636,
+      "type": "messagebus"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Verified",
+      "items": [
+        "Hidden region is written to the contact with the submission",
+        "Table lookup resolves the region from a real submission",
+        "Every submission passes a value, so stale values are overwritten"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Not yet verified",
+      "items": [
+        "A live run on real pages and traffic",
+        "Whether the 1 and 2 minute waits are long enough",
+        "Alert and marketing emails have never actually been sent"
+      ]
+    },
+    {
+      "dot": "slate",
+      "title": "Design trade-offs",
+      "items": [
+        "Three workflows each query the same table; none waits on another",
+        "Nurture email wording cannot live in a table, so region branches remain"
+      ]
+    }
+  ]
+}

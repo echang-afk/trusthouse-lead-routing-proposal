@@ -1,0 +1,201 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "今天:14 個 workflow 各自設 owner",
+    "locale": "zh-CN",
+    "quality_profile": "showcase",
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "frontend": {
+          "label": "入口(form)"
+        },
+        "backend": {
+          "label": "Workflow"
+        },
+        "security": {
+          "label": "contact owner"
+        }
+      }
+    }
+  },
+  "components": [
+    {
+      "id": "pages",
+      "type": "frontend",
+      "label": "TrustHouse 約 26 個頁面",
+      "sublabel": "4 個 membership form 共用",
+      "pos": [
+        40,
+        190
+      ],
+      "size": [
+        160,
+        70
+      ]
+    },
+    {
+      "id": "rc",
+      "type": "backend",
+      "label": "Request Care",
+      "sublabel": "設 owner、通知",
+      "pos": [
+        340,
+        70
+      ],
+      "size": [
+        190,
+        60
+      ]
+    },
+    {
+      "id": "boston",
+      "type": "backend",
+      "label": "Boston(2 個)",
+      "sublabel": "設 owner、通知、信",
+      "pos": [
+        340,
+        170
+      ],
+      "size": [
+        190,
+        60
+      ]
+    },
+    {
+      "id": "nurture",
+      "type": "backend",
+      "label": "4 個 RN Signature nurture",
+      "sublabel": "靠網址判斷 region,各自設 owner、通知",
+      "pos": [
+        340,
+        270
+      ],
+      "size": [
+        190,
+        60
+      ],
+      "tag": "靠命名猜"
+    },
+    {
+      "id": "others",
+      "type": "backend",
+      "label": "其他 4 個",
+      "sublabel": "NJ、Alyssa、Ambassador、RN Sig",
+      "pos": [
+        340,
+        370
+      ],
+      "size": [
+        190,
+        60
+      ]
+    },
+    {
+      "id": "owner",
+      "type": "security",
+      "label": "contact owner",
+      "sublabel": "多個 workflow 搶著寫",
+      "pos": [
+        700,
+        270
+      ],
+      "size": [
+        190,
+        70
+      ],
+      "tag": "race"
+    },
+    {
+      "id": "awforms",
+      "type": "frontend",
+      "label": "Alliance 的 18 個 form",
+      "sublabel": "WordPress 推進",
+      "pos": [
+        40,
+        470
+      ],
+      "size": [
+        160,
+        70
+      ]
+    },
+    {
+      "id": "aw",
+      "type": "backend",
+      "label": "Alliance(12 個)",
+      "sublabel": "依州別設 owner,每個 form 各一封通知",
+      "pos": [
+        340,
+        470
+      ],
+      "size": [
+        190,
+        60
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "pages-rc",
+      "from": "pages",
+      "to": "rc",
+      "variant": "default"
+    },
+    {
+      "id": "pages-boston",
+      "from": "pages",
+      "to": "boston",
+      "variant": "default"
+    },
+    {
+      "id": "pages-nurture",
+      "from": "pages",
+      "to": "nurture",
+      "variant": "default"
+    },
+    {
+      "id": "pages-others",
+      "from": "pages",
+      "to": "others",
+      "variant": "default"
+    },
+    {
+      "id": "rc-owner",
+      "from": "rc",
+      "to": "owner",
+      "variant": "security"
+    },
+    {
+      "id": "boston-owner",
+      "from": "boston",
+      "to": "owner",
+      "variant": "security"
+    },
+    {
+      "id": "nurture-owner",
+      "from": "nurture",
+      "to": "owner",
+      "variant": "security"
+    },
+    {
+      "id": "others-owner",
+      "from": "others",
+      "to": "owner",
+      "variant": "security"
+    },
+    {
+      "id": "aw-in",
+      "from": "awforms",
+      "to": "aw",
+      "variant": "default"
+    },
+    {
+      "id": "aw-owner",
+      "from": "aw",
+      "to": "owner",
+      "variant": "security"
+    }
+  ]
+}

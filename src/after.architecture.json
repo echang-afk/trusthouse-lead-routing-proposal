@@ -1,0 +1,232 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "After: four functions, one lookup table, two brands",
+    "locale": "en",
+    "quality_profile": "showcase",
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "frontend": {
+          "label": "Entries"
+        },
+        "backend": {
+          "label": "Workflows"
+        },
+        "database": {
+          "label": "Database"
+        },
+        "external": {
+          "label": "Emails"
+        }
+      }
+    }
+  },
+  "components": [
+    {
+      "id": "forms",
+      "type": "frontend",
+      "label": "TrustHouse: 2 normalized forms",
+      "sublabel": "pages pass the region",
+      "pos": [
+        40,
+        210
+      ],
+      "size": [
+        220,
+        70
+      ]
+    },
+    {
+      "id": "table",
+      "type": "database",
+      "label": "HubDB lookup table",
+      "sublabel": "form, answer, region, owner, brand, alert, email",
+      "pos": [
+        340,
+        40
+      ],
+      "size": [
+        190,
+        66
+      ],
+      "tag": "the one place to edit"
+    },
+    {
+      "id": "assign",
+      "type": "backend",
+      "label": "Assign Owner",
+      "sublabel": "owner only if blank; writes lead_region",
+      "pos": [
+        340,
+        150
+      ],
+      "size": [
+        190,
+        60
+      ]
+    },
+    {
+      "id": "alert",
+      "type": "backend",
+      "label": "Internal Alert",
+      "sublabel": "looks up table; alerts by type and region",
+      "pos": [
+        340,
+        250
+      ],
+      "size": [
+        190,
+        60
+      ]
+    },
+    {
+      "id": "nurture",
+      "type": "backend",
+      "label": "Nurture by Region",
+      "sublabel": "looks up table; sends region emails",
+      "pos": [
+        340,
+        350
+      ],
+      "size": [
+        190,
+        60
+      ]
+    },
+    {
+      "id": "life",
+      "type": "backend",
+      "label": "Lifecycle",
+      "sublabel": "Calendly click sets SQL",
+      "pos": [
+        340,
+        450
+      ],
+      "size": [
+        190,
+        60
+      ]
+    },
+    {
+      "id": "owner",
+      "type": "database",
+      "label": "contact",
+      "sublabel": "owner, lead_region",
+      "pos": [
+        700,
+        150
+      ],
+      "size": [
+        170,
+        60
+      ]
+    },
+    {
+      "id": "staff",
+      "type": "external",
+      "label": "Team gets alerts",
+      "sublabel": "owner plus fixed list",
+      "pos": [
+        700,
+        250
+      ],
+      "size": [
+        170,
+        60
+      ]
+    },
+    {
+      "id": "visitor",
+      "type": "external",
+      "label": "Lead gets emails",
+      "sublabel": "5 emails over 7 days",
+      "pos": [
+        700,
+        350
+      ],
+      "size": [
+        170,
+        60
+      ]
+    },
+    {
+      "id": "awforms",
+      "type": "frontend",
+      "label": "Alliance: 18 existing forms",
+      "sublabel": "unchanged; routed by state answer",
+      "pos": [
+        40,
+        60
+      ],
+      "size": [
+        220,
+        70
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "forms-assign",
+      "from": "forms",
+      "to": "assign",
+      "label": "submit",
+      "variant": "emphasis"
+    },
+    {
+      "id": "forms-alert",
+      "from": "forms",
+      "to": "alert"
+    },
+    {
+      "id": "forms-nurture",
+      "from": "forms",
+      "to": "nurture"
+    },
+    {
+      "id": "assign-table",
+      "from": "assign",
+      "to": "table",
+      "label": "look up",
+      "variant": "dashed",
+      "fromSide": "top",
+      "toSide": "bottom"
+    },
+    {
+      "id": "assign-owner",
+      "from": "assign",
+      "to": "owner",
+      "label": "write",
+      "variant": "emphasis"
+    },
+    {
+      "id": "alert-staff",
+      "from": "alert",
+      "to": "staff",
+      "variant": "dashed"
+    },
+    {
+      "id": "nurture-visitor",
+      "from": "nurture",
+      "to": "visitor",
+      "variant": "dashed"
+    },
+    {
+      "id": "visitor-life",
+      "from": "visitor",
+      "to": "life",
+      "label": "clicks Calendly link",
+      "variant": "dashed",
+      "fromSide": "bottom",
+      "toSide": "right"
+    },
+    {
+      "id": "aw-assign",
+      "from": "awforms",
+      "to": "assign",
+      "label": "same workflows",
+      "variant": "emphasis"
+    }
+  ]
+}

@@ -1,0 +1,201 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Today: 14 workflows each set the owner",
+    "locale": "en",
+    "quality_profile": "showcase",
+    "legend": {
+      "mode": "auto",
+      "entries": {
+        "frontend": {
+          "label": "Entries"
+        },
+        "backend": {
+          "label": "Workflows"
+        },
+        "security": {
+          "label": "Contact owner"
+        }
+      }
+    }
+  },
+  "components": [
+    {
+      "id": "pages",
+      "type": "frontend",
+      "label": "TrustHouse: about 26 pages",
+      "sublabel": "share 4 membership forms",
+      "pos": [
+        40,
+        190
+      ],
+      "size": [
+        210,
+        70
+      ]
+    },
+    {
+      "id": "rc",
+      "type": "backend",
+      "label": "Request Care",
+      "sublabel": "sets owner, alerts",
+      "pos": [
+        340,
+        70
+      ],
+      "size": [
+        190,
+        60
+      ]
+    },
+    {
+      "id": "boston",
+      "type": "backend",
+      "label": "Boston (2)",
+      "sublabel": "owner, alerts, email",
+      "pos": [
+        340,
+        170
+      ],
+      "size": [
+        190,
+        60
+      ]
+    },
+    {
+      "id": "nurture",
+      "type": "backend",
+      "label": "4 RN Signature nurtures",
+      "sublabel": "guess region from the URL",
+      "pos": [
+        340,
+        270
+      ],
+      "size": [
+        190,
+        60
+      ],
+      "tag": "guessed from naming"
+    },
+    {
+      "id": "others",
+      "type": "backend",
+      "label": "4 others",
+      "sublabel": "NJ, Alyssa, Ambassador, RN Sig",
+      "pos": [
+        340,
+        370
+      ],
+      "size": [
+        190,
+        60
+      ]
+    },
+    {
+      "id": "owner",
+      "type": "security",
+      "label": "contact owner",
+      "sublabel": "many workflows write it",
+      "pos": [
+        700,
+        270
+      ],
+      "size": [
+        190,
+        70
+      ],
+      "tag": "race"
+    },
+    {
+      "id": "awforms",
+      "type": "frontend",
+      "label": "Alliance: 18 forms",
+      "sublabel": "pushed from WordPress",
+      "pos": [
+        40,
+        470
+      ],
+      "size": [
+        210,
+        70
+      ]
+    },
+    {
+      "id": "aw",
+      "type": "backend",
+      "label": "Alliance (12)",
+      "sublabel": "owner by state, one alert per form",
+      "pos": [
+        340,
+        470
+      ],
+      "size": [
+        190,
+        60
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "id": "pages-rc",
+      "from": "pages",
+      "to": "rc",
+      "variant": "default"
+    },
+    {
+      "id": "pages-boston",
+      "from": "pages",
+      "to": "boston",
+      "variant": "default"
+    },
+    {
+      "id": "pages-nurture",
+      "from": "pages",
+      "to": "nurture",
+      "variant": "default"
+    },
+    {
+      "id": "pages-others",
+      "from": "pages",
+      "to": "others",
+      "variant": "default"
+    },
+    {
+      "id": "rc-owner",
+      "from": "rc",
+      "to": "owner",
+      "variant": "security"
+    },
+    {
+      "id": "boston-owner",
+      "from": "boston",
+      "to": "owner",
+      "variant": "security"
+    },
+    {
+      "id": "nurture-owner",
+      "from": "nurture",
+      "to": "owner",
+      "variant": "security"
+    },
+    {
+      "id": "others-owner",
+      "from": "others",
+      "to": "owner",
+      "variant": "security"
+    },
+    {
+      "id": "aw-in",
+      "from": "awforms",
+      "to": "aw",
+      "variant": "default"
+    },
+    {
+      "id": "aw-owner",
+      "from": "aw",
+      "to": "owner",
+      "variant": "security"
+    }
+  ]
+}

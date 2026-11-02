@@ -1,0 +1,285 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "一個 membership lead 從填表到被處理",
+    "locale": "zh-CN",
+    "viewBox": [
+      1080,
+      730
+    ],
+    "column_fit": "spread",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "views": [
+      {
+        "id": "owner",
+        "label": "設 owner",
+        "focus": [
+          "visitor",
+          "page",
+          "hubspot",
+          "assign",
+          "table"
+        ],
+        "note": "region 隨提交進來,查表決定 owner,owner 為空才設。"
+      },
+      {
+        "id": "alert",
+        "label": "通知同仁",
+        "focus": [
+          "hubspot",
+          "alert",
+          "table"
+        ],
+        "note": "等 2 分鐘讓 owner 先寫入,再依通知類型寄信。"
+      },
+      {
+        "id": "nurture",
+        "label": "寄 nurture 信",
+        "focus": [
+          "hubspot",
+          "nurture",
+          "table",
+          "visitor"
+        ],
+        "note": "只對 8 個指定 form 觸發,依 region 寄各自的 5 封信。"
+      }
+    ]
+  },
+  "participants": [
+    {
+      "id": "visitor",
+      "type": "external",
+      "label": "訪客",
+      "sublabel": "在頁面填表"
+    },
+    {
+      "id": "page",
+      "type": "frontend",
+      "label": "頁面嵌入",
+      "sublabel": "帶入 region 值"
+    },
+    {
+      "id": "hubspot",
+      "type": "cloud",
+      "label": "HubSpot",
+      "sublabel": "form 與 contact"
+    },
+    {
+      "id": "assign",
+      "type": "backend",
+      "label": "Assign Owner",
+      "sublabel": "workflow"
+    },
+    {
+      "id": "table",
+      "type": "database",
+      "label": "HubDB 對照表",
+      "sublabel": "form、region、owner"
+    },
+    {
+      "id": "alert",
+      "type": "messagebus",
+      "label": "Internal Alert",
+      "sublabel": "workflow"
+    },
+    {
+      "id": "nurture",
+      "type": "messagebus",
+      "label": "Nurture",
+      "sublabel": "workflow"
+    }
+  ],
+  "segments": [
+    {
+      "from": 150,
+      "to": 355,
+      "label": "設 owner"
+    },
+    {
+      "from": 362,
+      "to": 500,
+      "label": "通知同仁"
+    },
+    {
+      "from": 512,
+      "to": 645,
+      "label": "nurture"
+    }
+  ],
+  "messages": [
+    {
+      "id": "fill",
+      "from": "visitor",
+      "to": "page",
+      "y": 175,
+      "label": "填表",
+      "variant": "default"
+    },
+    {
+      "id": "submit",
+      "from": "page",
+      "to": "hubspot",
+      "y": 207,
+      "label": "送出,帶 lead_region",
+      "variant": "emphasis"
+    },
+    {
+      "id": "trigger-owner",
+      "from": "hubspot",
+      "to": "assign",
+      "y": 239,
+      "label": "觸發,等 1 分鐘",
+      "variant": "default"
+    },
+    {
+      "id": "lookup-owner",
+      "from": "assign",
+      "to": "table",
+      "y": 271,
+      "label": "查:form 與 region",
+      "variant": "emphasis"
+    },
+    {
+      "id": "owner-result",
+      "from": "table",
+      "to": "assign",
+      "y": 303,
+      "label": "owner、通知類型",
+      "variant": "return"
+    },
+    {
+      "id": "write-owner",
+      "from": "assign",
+      "to": "hubspot",
+      "y": 335,
+      "label": "寫 lead_region,owner 空才設",
+      "variant": "emphasis"
+    },
+    {
+      "id": "trigger-alert",
+      "from": "hubspot",
+      "to": "alert",
+      "y": 385,
+      "label": "觸發,等 2 分鐘",
+      "variant": "default"
+    },
+    {
+      "id": "lookup-alert",
+      "from": "alert",
+      "to": "table",
+      "y": 417,
+      "label": "查:通知類型",
+      "variant": "default"
+    },
+    {
+      "id": "alert-result",
+      "from": "table",
+      "to": "alert",
+      "y": 449,
+      "label": "類型與 region",
+      "variant": "return"
+    },
+    {
+      "id": "send-alert",
+      "from": "alert",
+      "to": "hubspot",
+      "y": 481,
+      "label": "寄通知:owner 與固定名單",
+      "variant": "dashed"
+    },
+    {
+      "id": "trigger-nurture",
+      "from": "hubspot",
+      "to": "nurture",
+      "y": 535,
+      "label": "觸發,只限指定 form",
+      "variant": "default"
+    },
+    {
+      "id": "lookup-nurture",
+      "from": "nurture",
+      "to": "table",
+      "y": 567,
+      "label": "查:region",
+      "variant": "default"
+    },
+    {
+      "id": "nurture-result",
+      "from": "table",
+      "to": "nurture",
+      "y": 599,
+      "label": "region",
+      "variant": "return"
+    },
+    {
+      "id": "send-mail",
+      "from": "nurture",
+      "to": "visitor",
+      "y": 631,
+      "label": "寄第 1 封信,7 天內共 5 封",
+      "variant": "dashed"
+    }
+  ],
+  "activations": [
+    {
+      "participant": "hubspot",
+      "from": 202,
+      "to": 488,
+      "type": "cloud"
+    },
+    {
+      "participant": "assign",
+      "from": 234,
+      "to": 340,
+      "type": "backend"
+    },
+    {
+      "participant": "table",
+      "from": 266,
+      "to": 308,
+      "type": "database"
+    },
+    {
+      "participant": "alert",
+      "from": 380,
+      "to": 486,
+      "type": "messagebus"
+    },
+    {
+      "participant": "nurture",
+      "from": 530,
+      "to": 636,
+      "type": "messagebus"
+    }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "已驗證",
+      "items": [
+        "隱藏的 region 會隨提交寫進 contact",
+        "查表能用這筆真實提交判出 region",
+        "每次提交都帶值,舊值會被蓋掉"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "尚未驗證",
+      "items": [
+        "在真實頁面與真實流量下的實跑",
+        "等 1 分鐘、2 分鐘是否足夠",
+        "通知信與行銷信從未真的寄過"
+      ]
+    },
+    {
+      "dot": "slate",
+      "title": "設計取捨",
+      "items": [
+        "三個 workflow 各自查同一張表,不互相等待結果",
+        "nurture 信件內容不能表格化,仍是 region 分支"
+      ]
+    }
+  ]
+}
